@@ -13,7 +13,7 @@ modalBtnAddBook.addEventListener('click', addBookToLibrary);
 function Book(bookName, bookAuthor, readStatus) {
     this.bookName = bookName;
     this.bookAuthor = bookAuthor;
-    this.readStatus = readStatus;
+    this.readStatus = readStatus === '+' ? true : false ;
     this.id = new Date().getTime();
 }
 
@@ -26,10 +26,10 @@ function hideAddBookModal() {
 }
 
 function addBookToLibrary() {
-    let bookName = document.getElementById('modal-name').value,
-    bookAuthor = document.getElementById('modal-author').value,
-    readStatus = document.getElementById('modal-read').value === "+"? true : false;
-    let book = new Book(bookName, bookAuthor, readStatus)
+    let bookName = document.getElementById('modal-name'),
+    bookAuthor = document.getElementById('modal-author'),
+    readStatus = document.getElementById('modal-read');
+    let book = new Book(bookName.value, bookAuthor.value, readStatus.value)
     myLibrary = [
         ...myLibrary, 
         book,
@@ -37,9 +37,9 @@ function addBookToLibrary() {
     hideAddBookModal();
     render();
     localStorage.library = JSON.stringify(myLibrary);
-    document.getElementById('modal-name').value = "";
-    document.getElementById('modal-author').value = "";
-    document.getElementById('modal-read').value = "";
+    bookName.value = '';
+    bookAuthor.value = '';
+    readStatus.value = '';
 }
 
 function removeBookFromLibrary(id) {
