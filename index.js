@@ -26,7 +26,7 @@ function hideAddBookModal() {
 }
 
 function addBookToLibrary() {
-    const bookName = document.getElementById('modal-name').value,
+    let bookName = document.getElementById('modal-name').value,
     bookAuthor = document.getElementById('modal-author').value,
     readStatus = document.getElementById('modal-read').value === "+"? true : false;
     let book = new Book(bookName, bookAuthor, readStatus)
@@ -37,6 +37,9 @@ function addBookToLibrary() {
     hideAddBookModal();
     render();
     localStorage.library = JSON.stringify(myLibrary);
+    document.getElementById('modal-name').value = "";
+    document.getElementById('modal-author').value = "";
+    document.getElementById('modal-read').value = "";
 }
 
 function removeBookFromLibrary(id) {
@@ -46,6 +49,7 @@ function removeBookFromLibrary(id) {
         return item.id != id;
     })
     render();
+    localStorage.library = JSON.stringify(myLibrary);
 }
 
 function render() {
