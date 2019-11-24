@@ -1,4 +1,4 @@
-let myLibrary = [];
+let myLibrary = localStorage.library ? JSON.parse(localStorage.library) : [];
 
 const modalBtnShow = document.getElementById('show-modal');
 const modalBtnAddBook = document.getElementById('add-book-btn');
@@ -36,6 +36,7 @@ function addBookToLibrary() {
     ]
     hideAddBookModal();
     render();
+    localStorage.library = JSON.stringify(myLibrary);
 }
 
 function removeBookFromLibrary(id) {
