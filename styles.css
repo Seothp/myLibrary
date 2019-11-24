@@ -6,6 +6,7 @@
 .book {
     padding: 20px;
     display: flex;
+    flex-direction: column;
     width: 400px;
     box-shadow: -3px 3px 20px rgba(0, 0, 0, 0.2);
 }
@@ -50,6 +51,7 @@
     border: none;
     color: #373434;
     transition: all .25s;
+    width: 120px;
 }
 .book__delete:hover {
     background: #eb6666;

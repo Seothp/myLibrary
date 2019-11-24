@@ -39,30 +39,48 @@ function addBookToLibrary() {
 }
 
 function removeBookFromLibrary(id) {
-
+    console.log(id);
+    myLibrary = myLibrary.filter(item =>{
+        console.log(item);
+        return item.id != id;
+    })
+    render();
 }
 
 function render() {
     libraryRoot.innerHTML = '';
     for (book of myLibrary) {
-        libraryRoot.innerHTML += renderBook(book);
-        
+        renderBook(book);
     }
+    
 }
 
 function renderBook({bookName, bookAuthor, readStatus, id}) {
-    return (
-        `
-        <div class="book" meta-id="${id}">
-            <div class="book__info">
-                <h3 class="book__name">${bookName}</h3>
-                <h4 class="book__author">${bookAuthor}</h4>
-                <span class="book__status">${readStatus ? 'Прочитана': 'Не прочитана'}</span>
-                <button class="book__delete">Удалить</button>
-            </div>
-        </div>
-        `
-    )
+    let book = document.createElement('div');
+    book.classList = "book";
+    book.setAttribute('meta-id', id);
+    
+    libraryRoot.append(book);
+
+    let bookInfo = document.createElement('div');
+    bookInfo.classList = 'book__info';
+    bookInfo.innerHTML = `
+            <h3 class="book__name">${bookName}</h3>
+            <h4 class="book__author">${bookAuthor}</h4>
+            <span class="book__status">${readStatus ? 'Прочитана': 'Не прочитана'}</span>
+        `;
+    let btnRemoveBook = document.createElement('button');
+    btnRemoveBook.classList = 'book__delete';
+    btnRemoveBook.textContent = 'Удалить'
+
+    btnRemoveBook.addEventListener('click', (el) => {
+        let book = el.target.closest('.book');
+        removeBookFromLibrary(book.getAttribute('meta-id'));
+    })
+    book.append(bookInfo);
+    book.append(btnRemoveBook);
 }
 
 render();
+
+/* <button class="book__delete">Удалить</button> */
