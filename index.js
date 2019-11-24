@@ -28,7 +28,7 @@ function hideAddBookModal() {
 function addBookToLibrary() {
     const bookName = document.getElementById('modal-name').value,
     bookAuthor = document.getElementById('modal-author').value,
-    readStatus = document.getElementById('modal-read').value;
+    readStatus = document.getElementById('modal-read').value === "+"? true : false;
     let book = new Book(bookName, bookAuthor, readStatus)
     myLibrary = [
         ...myLibrary, 
@@ -59,8 +59,6 @@ function renderBook({bookName, bookAuthor, readStatus, id}) {
     let book = document.createElement('div');
     book.classList = "book";
     book.setAttribute('meta-id', id);
-    
-    libraryRoot.append(book);
 
     let bookInfo = document.createElement('div');
     bookInfo.classList = 'book__info';
@@ -71,16 +69,18 @@ function renderBook({bookName, bookAuthor, readStatus, id}) {
         `;
     let btnRemoveBook = document.createElement('button');
     btnRemoveBook.classList = 'book__delete';
-    btnRemoveBook.textContent = 'Удалить'
+    btnRemoveBook.textContent = 'Удалить';
 
     btnRemoveBook.addEventListener('click', (el) => {
         let book = el.target.closest('.book');
         removeBookFromLibrary(book.getAttribute('meta-id'));
-    })
+    });
+    
+
+    libraryRoot.append(book);
     book.append(bookInfo);
     book.append(btnRemoveBook);
 }
 
 render();
 
-/* <button class="book__delete">Удалить</button> */
