@@ -1,6 +1,3 @@
-
-
-
 const modalBtnShow = document.getElementById('show-modal');
 const modalBtnAddBook = document.getElementById('add-book-btn');
 const modalBtnHide = document.getElementById('cancel-add-book');
@@ -11,10 +8,10 @@ const Library = () => {
     let myLibrary = localStorage.library ? JSON.parse(localStorage.library) : [];
 
     const addBookToLibrary = () => {
-        let bookName = document.getElementById('modal-name'),
+        const bookName = document.getElementById('modal-name'),
         bookAuthor = document.getElementById('modal-author'),
         readStatus = document.getElementById('modal-read');
-        let book = new Book(bookName.value, bookAuthor.value, readStatus.value);
+        const book = new Book(bookName.value, bookAuthor.value, readStatus.value);
         myLibrary = [
             ...myLibrary, 
             book,
@@ -28,9 +25,7 @@ const Library = () => {
     };
 
     const removeBookFromLibrary = (id) => {
-        console.log(id);
-        myLibrary = myLibrary.filter(item =>{
-            console.log(item);
+        myLibrary = myLibrary.filter(item => {
             return item.id != id;
         })
         render();
@@ -53,7 +48,7 @@ modalBtnAddBook.addEventListener('click', myLibrary.addBookToLibrary);
 function Book(bookName, bookAuthor, readStatus) {
     this.bookName = bookName;
     this.bookAuthor = bookAuthor;
-    this.readStatus = readStatus === '+' ? true : false ;
+    this.readStatus = readStatus === '+';
     this.id = new Date().getTime();
 }
 
@@ -74,23 +69,23 @@ function render() {
 }
 
 function renderBook({bookName, bookAuthor, readStatus, id}) {
-    let book = document.createElement('div');
+    const book = document.createElement('div');
     book.classList = "book";
     book.setAttribute('meta-id', id);
 
-    let bookInfo = document.createElement('div');
+    const bookInfo = document.createElement('div');
     bookInfo.classList = 'book__info';
     bookInfo.innerHTML = `
             <h3 class="book__name">${bookName}</h3>
             <h4 class="book__author">${bookAuthor}</h4>
             <span class="book__status">${readStatus ? 'Прочитана': 'Не прочитана'}</span>
         `;
-    let btnRemoveBook = document.createElement('button');
+    const btnRemoveBook = document.createElement('button');
     btnRemoveBook.classList = 'book__delete';
     btnRemoveBook.textContent = 'Удалить';
 
     btnRemoveBook.addEventListener('click', (el) => {
-        let book = el.target.closest('.book');
+        const book = el.target.closest('.book');
         myLibrary.removeBookFromLibrary(book.getAttribute('meta-id'));
     });
     
@@ -101,4 +96,3 @@ function renderBook({bookName, bookAuthor, readStatus, id}) {
 }
 
 render();
-
