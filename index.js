@@ -1,4 +1,5 @@
-let myLibrary = localStorage.library ? JSON.parse(localStorage.library) : [];
+
+
 
 const modalBtnShow = document.getElementById('show-modal');
 const modalBtnAddBook = document.getElementById('add-book-btn');
@@ -6,9 +7,48 @@ const modalBtnHide = document.getElementById('cancel-add-book');
 const modal = document.getElementById('add-book-modal');
 const libraryRoot = document.getElementById('library-root');
 
+const Library = () => {
+    let myLibrary = localStorage.library ? JSON.parse(localStorage.library) : [];
+
+    const addBookToLibrary = () => {
+        let bookName = document.getElementById('modal-name'),
+        bookAuthor = document.getElementById('modal-author'),
+        readStatus = document.getElementById('modal-read');
+        let book = new Book(bookName.value, bookAuthor.value, readStatus.value);
+        myLibrary = [
+            ...myLibrary, 
+            book,
+        ]
+        hideAddBookModal();
+        render();
+        localStorage.library = JSON.stringify(myLibrary);
+        bookName.value = '';
+        bookAuthor.value = '';
+        readStatus.value = '';
+    };
+
+    const removeBookFromLibrary = (id) => {
+        console.log(id);
+        myLibrary = myLibrary.filter(item =>{
+            console.log(item);
+            return item.id != id;
+        })
+        render();
+        localStorage.library = JSON.stringify(myLibrary);
+    };
+    const getLibrary = () => {
+        return myLibrary;
+    };
+    return {
+        removeBookFromLibrary,
+        addBookToLibrary,
+        getLibrary,
+    }
+}
+myLibrary = Library();
 modalBtnShow.addEventListener('click', showAddBookModal);
 modalBtnHide.addEventListener('click', hideAddBookModal);
-modalBtnAddBook.addEventListener('click', addBookToLibrary);
+modalBtnAddBook.addEventListener('click', myLibrary.addBookToLibrary);
 
 function Book(bookName, bookAuthor, readStatus) {
     this.bookName = bookName;
@@ -25,36 +65,9 @@ function hideAddBookModal() {
     modal.classList.remove('active');
 }
 
-function addBookToLibrary() {
-    let bookName = document.getElementById('modal-name'),
-    bookAuthor = document.getElementById('modal-author'),
-    readStatus = document.getElementById('modal-read');
-    let book = new Book(bookName.value, bookAuthor.value, readStatus.value)
-    myLibrary = [
-        ...myLibrary, 
-        book,
-    ]
-    hideAddBookModal();
-    render();
-    localStorage.library = JSON.stringify(myLibrary);
-    bookName.value = '';
-    bookAuthor.value = '';
-    readStatus.value = '';
-}
-
-function removeBookFromLibrary(id) {
-    console.log(id);
-    myLibrary = myLibrary.filter(item =>{
-        console.log(item);
-        return item.id != id;
-    })
-    render();
-    localStorage.library = JSON.stringify(myLibrary);
-}
-
 function render() {
     libraryRoot.innerHTML = '';
-    for (book of myLibrary) {
+    for (book of myLibrary.getLibrary()) {
         renderBook(book);
     }
     
@@ -78,7 +91,7 @@ function renderBook({bookName, bookAuthor, readStatus, id}) {
 
     btnRemoveBook.addEventListener('click', (el) => {
         let book = el.target.closest('.book');
-        removeBookFromLibrary(book.getAttribute('meta-id'));
+        myLibrary.removeBookFromLibrary(book.getAttribute('meta-id'));
     });
     
 
